@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Route.C41.G01.BLL.Repcsitories
 {
-    internal class DepartmintRepository : IDepartmintRepository
+    public class DepartmintRepository : IDepartmintRepository
     {
         private readonly ApplicationDpContext _dbcontext;
 

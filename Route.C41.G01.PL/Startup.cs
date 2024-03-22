@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Route.C41.G01.DAL.Data;
+using Route.C41.G01.BLL.Interfaces;
+using Route.C41.G01.BLL.Repcsitories;
 
 namespace Route.C41.G01.PL
 {
@@ -31,6 +33,8 @@ namespace Route.C41.G01.PL
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
+
+            services.AddScoped<IDepartmintRepository, DepartmintRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
