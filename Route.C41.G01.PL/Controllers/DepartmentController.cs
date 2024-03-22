@@ -38,5 +38,19 @@ namespace Route.C41.G01.PL.Controllers
 
         }
 
+        public IActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return BadRequest();
+            }
+            var department = _departmintRepository.Get(id.Value);
+            if (department == null)
+            {
+                return NotFound();
+            }
+            return View (department);
+        }
+
     }
 }
