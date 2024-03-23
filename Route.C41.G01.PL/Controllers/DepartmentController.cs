@@ -69,6 +69,7 @@ namespace Route.C41.G01.PL.Controllers
             return View(department);
             
         }
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public IActionResult Edit([FromRoute]int id , Department department)
         {
