@@ -1,0 +1,27 @@
+﻿@model Department
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1 class="text-danger" >Are You Sure Delete This Department </h1>
+<form asp-action="Delete">
+    <div class="mb-4">
+        <label asp-for="Code" class="col-form-label"></label>
+        <input asp-for="Code" class="form-control"  readonly />
+        
+    </div>
+    <div class="mb-4">
+        <label asp-for="Name" class="col-form-label"></label>
+        <input asp-for="Name" class="form-control" readonly />
+       
+    </div>
+    <div class="mb-4">
+        <label asp-for="DateOfCreation" class="col-form-label"></label>
+        <input asp-for="DateOfCreation" class="form-control" readonly />
+       
+    </div>
+    <input type="submit" class="btn btn-danger" value="Delete" /> |
+    <a asp-action="Index" class="btn btn-link">Cancel</a>
+</form>
+
+
