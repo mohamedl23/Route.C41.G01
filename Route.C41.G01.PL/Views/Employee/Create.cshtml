@@ -1,0 +1,51 @@
+﻿@model Employee 
+@{
+    ViewData["Title"] = "Create Employee";
+}
+
+<h1 class="pb-4">Create New Employee </h1>
+<form asp-action="Create" class="form-group" >
+    <div class="mb-4">
+        <label asp-for="Name" class="col-form-label"></label>
+        <input asp-for="Name" class="form-control" placeholder="Mohamed" />
+        <span asp-validation-for="Name" class="text-danger" ></span>
+    </div>
+    <div class="mb-4">
+        <label asp-for="Address" class="col-form-label"></label>
+        <input asp-for="Address" class="form-control" placeholder="Mohamed" />
+        <span asp-validation-for="Address" class="text-danger"></span>
+    </div>
+    <div class="mb-4">
+        <label asp-for="Age" class="col-form-label"></label>
+        <input asp-for="Age" class="form-control" placeholder="22" />
+        <span asp-validation-for="Age" class="text-danger"></span>
+    </div>
+    <div class="mb-4">
+        <label asp-for="Salary" class="col-form-label"></label>
+        <input asp-for="Salary" class="form-control" placeholder="3000" />
+        <span asp-validation-for="Salary" class="text-danger"></span>
+    </div>
+    <div class="mb-4">
+        <input asp-for="IsActive" class="form-check-input" />
+        <label asp-for="IsActive" class="col-form-label"></label>
+    </div>
+    <div class="mb-4">
+        <label asp-for="HiringDate" class="col-form-label"></label>
+        <input asp-for="HiringDate" class="form-control" placeholder="22/3/2024 07:30 PM" />
+        <span asp-validation-for="HiringDate" class="text-danger"></span>
+    </div>
+    <div class="mb-4">
+        <label asp-for="gender" class="col-form-label"></label>
+        <input asp-for="gender" class="form-control" placeholder="Male , Female" />
+        <span asp-validation-for="gender" class="text-danger"></span>
+    </div>
+    <div class="mb-4">
+        <label asp-for="Email" class="col-form-label"></label>
+        <input asp-for="Email" class="form-control" placeholder="Mohamed123@gmail.com" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    
+    <input type="submit" class="btn btn-primary" value="Create" /> |
+    <a asp-action="Index" class="btn btn-light" >Back To List</a>
+</form>
