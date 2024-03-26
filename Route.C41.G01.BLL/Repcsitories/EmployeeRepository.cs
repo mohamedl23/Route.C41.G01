@@ -10,41 +10,19 @@ using System.Threading.Tasks;
 
 namespace Route.C41.G01.BLL.Repcsitories
 {
-    internal class EmployeeRepository : IEmployeeRepository
+    public class EmployeeRepository : GenericRepository<Employee> , IEmployeeRepository
     {
         private readonly ApplicationDpContext _dbcontext;
 
-        public EmployeeRepository(ApplicationDpContext dbcontext)
+        public EmployeeRepository(ApplicationDpContext dbcontext) : base(dbcontext)
         {
             _dbcontext = dbcontext;
-
         }
+        
 
-        public int Add(Employee entity)
+        public IQueryable<Employee> GetEmployeesByAddres(string address)
         {
-            _dbcontext.Add(entity);
-            return _dbcontext.SaveChanges();
-        }
-        public int Update(Employee entity)
-        {
-            _dbcontext.Update(entity);
-            return _dbcontext.SaveChanges();
-        }
-
-        public int Delete(Employee entity)
-        {
-            _dbcontext.Remove(entity);
-            return _dbcontext.SaveChanges();
-        }
-
-        public Employee Get(int id)
-        {
-            return _dbcontext.Employees.Find(id);
-        }
-
-        public IEnumerable<Employee> GetAll()
-        {
-            return _dbcontext.Employees.AsNoTracking().ToList();
+            return _dbcontext.Employees.Where(E=> E.Address.ToLower() == E.Address.ToLower());
         }
     }
 }

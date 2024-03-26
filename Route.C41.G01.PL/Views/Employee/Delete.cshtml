@@ -1,0 +1,44 @@
+﻿@model Employee
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1 class="text-danger" >Are You Sure Delete This Employee </h1>
+<form asp-action="Delete">
+    <div class="mb-4">
+        <label asp-for="Name" class="col-form-label"></label>
+        <input asp-for="Name" class="form-control" readonly />
+    </div>
+    <div class="mb-4">
+        <label asp-for="Address" class="col-form-label"></label>
+        <input asp-for="Address" class="form-control" readonly />
+    </div>
+    <div class="mb-4">
+        <label asp-for="Age" class="col-form-label"></label>
+        <input asp-for="Age" class="form-control" readonly />
+    </div>
+    <div class="mb-4">
+        <label asp-for="Salary" class="col-form-label"></label>
+        <input asp-for="Salary" class="form-control" readonly />
+    </div>
+    <div class="mb-4">
+        <input asp-for="IsActive" class="form-check-input" readonly />
+        <label asp-for="IsActive" class="col-form-label"></label>
+    </div>
+    <div class="mb-4">
+        <label asp-for="HiringDate" class="col-form-label"></label>
+        <input asp-for="HiringDate" class="form-control" readonly />
+    </div>
+    <div class="mb-4">
+        <label asp-for="gender" class="col-form-label"></label>
+        <input asp-for="gender" class="form-control" readonly />
+    </div>
+    <div class="mb-4">
+        <label asp-for="Email" class="col-form-label"></label>
+        <input asp-for="Email" class="form-control" readonly />
+    </div>
+    <input type="submit" class="btn btn-danger" value="Delete" /> |
+    <a asp-action="Index" class="btn btn-link">Cancel</a>
+</form>
+
+
