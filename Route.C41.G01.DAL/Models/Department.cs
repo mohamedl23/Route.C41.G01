@@ -11,7 +11,7 @@ namespace Route.C41.G01.DAL.Models
     public class Department
     {
         public int Id { get; set; }
-        [Required(ErrorMessage ="Code Is Required!!")]
+        [Required(ErrorMessage = "Code Is Required!!")]
         public int Code { get; set; }
         [Required(ErrorMessage = "Name  Is Required!!")]
         public string Name { get; set; }

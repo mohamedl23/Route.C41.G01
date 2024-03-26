@@ -10,41 +10,14 @@ using System.Threading.Tasks;
 
 namespace Route.C41.G01.BLL.Repcsitories
 {
-    public class DepartmintRepository : IDepartmintRepository
+    public class DepartmintRepository : GenericRepository<Department> , IDepartmintRepository
     {
-        private readonly ApplicationDpContext _dbcontext;
+        //private readonly ApplicationDpContext _dbcontext;
 
-        public DepartmintRepository(ApplicationDpContext dbcontext)
+        public DepartmintRepository(ApplicationDpContext dbcontext) : base(dbcontext)
         {
-            _dbcontext = dbcontext;
+            //_dbcontext = dbcontext;
             
-        }
-
-        public int Add(Department entity)
-        {
-            _dbcontext.Add(entity);
-            return _dbcontext.SaveChanges();
-        }
-        public int Update(Department entity)
-        {
-            _dbcontext.Update(entity);
-            return _dbcontext.SaveChanges();
-        }
-
-        public int Delete(Department entity)
-        {
-            _dbcontext.Remove(entity);
-            return _dbcontext.SaveChanges();
-        }
-
-        public Department Get(int id)
-        {
-            return _dbcontext.Departments.Find(id);
-        }
-
-        public IEnumerable<Department> GetAll()
-        {
-            return _dbcontext.Departments.AsNoTracking().ToList();
         }
 
        
