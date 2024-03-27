@@ -19,7 +19,7 @@ namespace Route.C41.G01.DAL.Models
     {
         [EnumMember(Value = "FullTime")]
         FullTime = 1,
-        [EnumMember(Value = "PartTime")]
+        [EnumMember(Value = "PartTime")] 
         PartTime = 2
     }
     public class Employee

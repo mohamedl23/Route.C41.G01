@@ -5,37 +5,8 @@
 
 <h1 class="text-primary">Employee Details</h1>
 <br />
-<div class="mb-4">
-    <label asp-for="Name" class="col-form-label"></label>
-    <input asp-for="Name" class="form-control" readonly />
-</div>
-<div class="mb-4">
-    <label asp-for="Address" class="col-form-label"></label>
-    <input asp-for="Address" class="form-control" readonly />
-</div>
-<div class="mb-4">
-    <label asp-for="Age" class="col-form-label"></label>
-    <input asp-for="Age" class="form-control" readonly />
-</div>
-<div class="mb-4">
-    <label asp-for="Salary" class="col-form-label"></label>
-    <input asp-for="Salary" class="form-control" readonly />
-</div>
-<div class="mb-4">
-    <input asp-for="IsActive" class="form-check-input" readonly />
-    <label asp-for="IsActive" class="col-form-label"></label>
-</div>
-<div class="mb-4">
-    <label asp-for="HiringDate" class="col-form-label"></label>
-    <input asp-for="HiringDate" class="form-control" readonly />
-</div>
-<div class="mb-4">
-    <label asp-for="gender" class="col-form-label"></label>
-    <input asp-for="gender" class="form-control" readonly />
-</div>
-<div class="mb-4">
-    <label asp-for="Email" class="col-form-label"></label>
-    <input asp-for="Email" class="form-control" readonly />
-</div>
+
+<partial name="PartialView/DeleteDetailsEmployee" />
+
 <a asp-controller="Employee" asp-route-id="@Model.Id" asp-action="Edit" class="btn btn-primary"> Edit </a> |
 <a asp-action="Index" class="btn btn-light"> Back To List </a>

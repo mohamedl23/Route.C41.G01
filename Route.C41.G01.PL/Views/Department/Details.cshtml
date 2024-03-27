@@ -5,20 +5,8 @@
 
 <h1 class="text-primary" >Department Details</h1>
 <br />
-<div class="mb-4">
-    <label asp-for="Code" class="col-form-label"></label>
-    <input asp-for="Code" class="form-control" readonly  />
-    
-</div>
-<div class="mb-4">
-    <label asp-for="Name" class="col-form-label"></label>
-    <input asp-for="Name" class="form-control" readonly />
-    
-</div>
-<div class="mb-4">
-    <label asp-for="DateOfCreation" class="col-form-label"></label>
-    <input asp-for="DateOfCreation" class="form-control" readonly  />
-   
-</div>
+
+<partial name="PartialView/DeleteDetailsDepartment" />
+
 <a asp-controller="Department" asp-route-id="@Model.Id" asp-action="Edit" class="btn btn-primary"> Edit </a> |
 <a asp-action="Index" class="btn btn-light"> Back To List </a>
