@@ -24,21 +24,14 @@
                </tr>
            </thead>
            <tbody>
-                @foreach (var Department in Model)
+                @foreach (var department in Model)
                 {
                     <tr>
-                        <td>@Department.Code</td>
-                        <td>@Department.Name</td>
-                        <td>@Department.DateOfCreation</td>
-                        <td>
-                            <a asp-controller="Department" asp-action="Details" asp-route-Id="@Department.Id" class="btn btn-warning"> <i class="fas fa-eye"></i> Details</a>
-                        </td>
-                        <td>
-                            <a asp-controller="Department" asp-action="Edit" asp-route-Id="@Department.Id" class="btn btn-success"><i class="fas fa-pencil"></i> Update</a>
-                        </td>
-                        <td>
-                            <a asp-controller="Department" asp-action="Delete" asp-route-Id="@Department.Id" class="btn btn-danger"><i class="fas fa-trash"></i> Delete</a>
-                        </td>
+                        <td>@department.Code</td>
+                        <td>@department.Name</td>
+                        <td>@department.DateOfCreation</td>
+                        <partial name="_ButtonPartialView" model="@department.Id" />
+
                     </tr>
                 }
            </tbody>
