@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using Route.C41.G01.BLL.Interfaces;
+using Route.C41.G01.BLL.Repcsitories;
 using Route.C41.G01.DAL.Models;
 using System;
 
@@ -10,12 +11,19 @@ namespace Route.C41.G01.PL.Controllers
     public class EmployeeController : Controller
     {
         private readonly IEmployeeRepository _employeeRepository;
+        private readonly IDepartmintRepository _departmintRepository;
         private readonly IWebHostEnvironment _env;
 
         public EmployeeController(IEmployeeRepository EmployeeRepository, IWebHostEnvironment env)
         {
             _employeeRepository = EmployeeRepository;
             _env = env;
+        }
+
+        public EmployeeController(IEmployeeRepository employeeRepository, IDepartmintRepository departmintRepository)
+        {
+            _employeeRepository = employeeRepository;
+            _departmintRepository = departmintRepository;
         }
 
         public IActionResult Index()
@@ -28,6 +36,8 @@ namespace Route.C41.G01.PL.Controllers
 
 
             var departments = _employeeRepository.GetAll();
+            
+            ViewBag.Departments = _departmintRepository.GetAll();
 
             return View(departments);
         }
