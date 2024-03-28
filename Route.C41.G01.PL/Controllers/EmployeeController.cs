@@ -20,6 +20,13 @@ namespace Route.C41.G01.PL.Controllers
 
         public IActionResult Index()
         {
+            //Binding is One Way Binding in MVC
+            // View Data Is A Dictionary Object
+
+            //ViewData["Message"] = "Hello View Data";
+            ViewBag.Message = "Hello View Bag";
+
+
             var departments = _employeeRepository.GetAll();
 
             return View(departments);
