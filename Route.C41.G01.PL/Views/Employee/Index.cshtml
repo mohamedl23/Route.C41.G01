@@ -6,11 +6,16 @@
 
     string viewDataMessage = ViewData["Message"] as string;
     string viewBagMessage = ViewBag.Message;
-
+    //string TempDataMessage = TempData["Message"] as string;
 
 }
 @* <div class="alert alert-primary" >@ViewData["Message"] </div> *@
 @* <div class="alert alert-primary" >@ViewBag.Message </div> *@
+@if (!string.IsNullOrEmpty(TempData["Message"] as string))
+{
+    
+<div class="alert alert-success">@TempData["Message"] </div>
+}
 
 
 <h1 class="text-center pd-4" >All Employee</h1>

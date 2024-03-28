@@ -24,7 +24,7 @@ namespace Route.C41.G01.PL.Controllers
             // View Data Is A Dictionary Object
 
             //ViewData["Message"] = "Hello View Data";
-            ViewBag.Message = "Hello View Bag";
+            //ViewBag.Message = "Hello View Bag";
 
 
             var departments = _employeeRepository.GetAll();
@@ -44,8 +44,13 @@ namespace Route.C41.G01.PL.Controllers
                 var count = _employeeRepository.Add(employee);
                 if (count > 0)
                 {
-                    return RedirectToAction(nameof(Index));
+                    TempData["Message"] = "Employee is Created Successfully";
                 }
+                else
+                {
+                    TempData["Message"] = "An Error Has Occured , Department Not Created";
+                }
+                    return RedirectToAction(nameof(Index));
             }
             return View(employee);
 
