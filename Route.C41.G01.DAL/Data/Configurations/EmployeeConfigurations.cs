@@ -29,6 +29,7 @@ namespace Route.C41.G01.DAL.Data.Configurations
                (EmployeeType) => EmployeeType.ToString(),
                (EmployeeTypeAsstring) => (EmpType)Enum.Parse(typeof(EmpType), EmployeeTypeAsstring, true)
                );
+            
         }
     }
 }

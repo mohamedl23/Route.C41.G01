@@ -45,6 +45,9 @@ namespace Route.C41.G01.DAL.Models
         public DateTime CreationDate { get; set; } = DateTime.Now;
         public bool IsDeleted { get; set; } = false;
 
+        public int? DepartmentId { get; set; }
+        public Department Department { get; set; }
+
 
 
     }

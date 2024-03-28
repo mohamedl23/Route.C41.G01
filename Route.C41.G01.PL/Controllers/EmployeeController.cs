@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using Route.C41.G01.BLL.Interfaces;
+using Route.C41.G01.BLL.Repcsitories;
 using Route.C41.G01.DAL.Models;
 using System;
 
@@ -10,6 +11,7 @@ namespace Route.C41.G01.PL.Controllers
     public class EmployeeController : Controller
     {
         private readonly IEmployeeRepository _employeeRepository;
+        private readonly IDepartmintRepository _departmintRepository;
         private readonly IWebHostEnvironment _env;
 
         public EmployeeController(IEmployeeRepository EmployeeRepository, IWebHostEnvironment env)
@@ -18,9 +20,24 @@ namespace Route.C41.G01.PL.Controllers
             _env = env;
         }
 
+        public EmployeeController(IEmployeeRepository employeeRepository, IDepartmintRepository departmintRepository)
+        {
+            _employeeRepository = employeeRepository;
+            _departmintRepository = departmintRepository;
+        }
+
         public IActionResult Index()
         {
+            //Binding is One Way Binding in MVC
+            // View Data Is A Dictionary Object
+
+            //ViewData["Message"] = "Hello View Data";
+            //ViewBag.Message = "Hello View Bag";
+
+
             var departments = _employeeRepository.GetAll();
+            
+            ViewBag.Departments = _departmintRepository.GetAll();
 
             return View(departments);
         }
@@ -37,8 +54,13 @@ namespace Route.C41.G01.PL.Controllers
                 var count = _employeeRepository.Add(employee);
                 if (count > 0)
                 {
-                    return RedirectToAction(nameof(Index));
+                    TempData["Message"] = "Employee is Created Successfully";
                 }
+                else
+                {
+                    TempData["Message"] = "An Error Has Occured , Department Not Created";
+                }
+                    return RedirectToAction(nameof(Index));
             }
             return View(employee);
 

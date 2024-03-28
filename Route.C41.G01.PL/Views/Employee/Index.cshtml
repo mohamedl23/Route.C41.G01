@@ -3,7 +3,19 @@
 
 @{
     ViewData["Title"] = "Index";
+
+    string viewDataMessage = ViewData["Message"] as string;
+    string viewBagMessage = ViewBag.Message;
+    //string TempDataMessage = TempData["Message"] as string;
+
 }
+@* <div class="alert alert-primary" >@ViewData["Message"] </div> *@
+@* <div class="alert alert-primary" >@ViewBag.Message </div> *@
+@if (!string.IsNullOrEmpty(TempData["Message"] as string))
+{  
+<div class="alert alert-success">@TempData["Message"] </div>
+}
+
 
 <h1 class="text-center pd-4" >All Employee</h1>
 <br/>
@@ -19,6 +31,8 @@
                    <th>@Html.DisplayNameFor( D => D.Name)</th>
                    <th>@Html.DisplayNameFor( D => D.Age)</th>
                    <th>@Html.DisplayNameFor( D => D.Salary)</th>
+                   <th>@Html.DisplayNameFor( D => D.Department)</th>
+
                    <th>@Html.DisplayNameFor( D => D.IsActive)</th>
                    <th>@Html.DisplayNameFor( D => D.gender)</th>
                    <th>@Html.DisplayNameFor( D => D.Email)</th>
@@ -36,6 +50,7 @@
                         <td>@employee.Name</td>
                         <td>@employee.Age</td>
                         <td>@employee.Salary</td>
+                        <td>@employee.Department?.Name</td>
                         <td>@employee.IsActive</td>
                         <td>@employee.gender</td>
                         <td>@employee.Email</td>

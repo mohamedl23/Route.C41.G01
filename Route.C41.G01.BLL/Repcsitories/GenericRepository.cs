@@ -44,7 +44,15 @@ namespace Route.C41.G01.BLL.Repcsitories
 
         public IEnumerable<T> GetAll()
         {
-            return _dbcontext.Set<T>().AsNoTracking().ToList();
+            if (typeof(T) == typeof(Employee))
+            {
+                return (IEnumerable <T> ) _dbcontext.Employees.Include(E => E.Department).ToList();
+            }
+            else
+            {
+                return _dbcontext.Set<T>().AsNoTracking().ToList();
+            }
+            
         }
     }
 }
