@@ -19,6 +19,7 @@ namespace Route.C41.G01.DAL.Data.Configurations
             builder.Property(D => D.Code).HasColumnType("varchar").HasMaxLength(50).IsRequired();
             builder.Property(D => D.Name).HasColumnType("varchar").HasMaxLength(50).IsRequired();
 
+            
 
         }
     }
