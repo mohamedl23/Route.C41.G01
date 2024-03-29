@@ -12,11 +12,11 @@ namespace Route.C41.G01.BLL.Repcsitories
 {
     public class EmployeeRepository : GenericRepository<Employee> , IEmployeeRepository
     {
-        private readonly ApplicationDpContext _dbcontext;
+        // private  readonly ApplicationDpContext _dbcontext;
 
         public EmployeeRepository(ApplicationDpContext dbcontext) : base(dbcontext)
         {
-            _dbcontext = dbcontext;
+         //   _dbcontext = dbcontext;
         }
         
 
@@ -24,5 +24,8 @@ namespace Route.C41.G01.BLL.Repcsitories
         {
             return _dbcontext.Employees.Where(E=> E.Address.ToLower() == E.Address.ToLower());
         }
+         
+        public IQueryable<Employee> SearchByName(string Name)
+          => _dbcontext.Employees.Where (E => E.Name.ToLower().Contains(Name));
     }
 }

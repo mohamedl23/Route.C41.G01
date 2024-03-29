@@ -5,6 +5,8 @@ using Route.C41.G01.BLL.Interfaces;
 using Route.C41.G01.BLL.Repcsitories;
 using Route.C41.G01.DAL.Models;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Route.C41.G01.PL.Controllers
 {
@@ -14,36 +16,48 @@ namespace Route.C41.G01.PL.Controllers
         private readonly IDepartmintRepository _departmintRepository;
         private readonly IWebHostEnvironment _env;
 
-        public EmployeeController(IEmployeeRepository EmployeeRepository, IWebHostEnvironment env)
-        {
-            _employeeRepository = EmployeeRepository;
-            _env = env;
-        }
+        //public EmployeeController(IEmployeeRepository EmployeeRepository, IWebHostEnvironment env)
+        //{
+        //    _employeeRepository = EmployeeRepository;
+            
+        //}
 
-        public EmployeeController(IEmployeeRepository employeeRepository, IDepartmintRepository departmintRepository)
+        public EmployeeController(IEmployeeRepository employeeRepository, IDepartmintRepository departmintRepository, IWebHostEnvironment env)
         {
             _employeeRepository = employeeRepository;
             _departmintRepository = departmintRepository;
+            _env = env;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string SearchInput)
         {
             //Binding is One Way Binding in MVC
             // View Data Is A Dictionary Object
 
             //ViewData["Message"] = "Hello View Data";
             //ViewBag.Message = "Hello View Bag";
+            //IEnumerable<Employee> employees;
+            var employees = Enumerable.Empty<Employee>();
 
+            if (string.IsNullOrEmpty(SearchInput))
+            {
+                employees = _employeeRepository.GetAll();
+            }
+            else
+            {
+                employees = _employeeRepository.SearchByName(SearchInput.ToLower());
+            }
 
             var departments = _employeeRepository.GetAll();
             
             ViewBag.Departments = _departmintRepository.GetAll();
 
-            return View(departments);
+            return View(employees);
         }
         [HttpGet]
         public IActionResult Create()
         {
+            ViewBag.Departments = _departmintRepository.GetAll();
             return View();
         }
         [HttpPost]
@@ -82,6 +96,8 @@ namespace Route.C41.G01.PL.Controllers
 
         public IActionResult Edit(int? id)
         {
+            ViewBag.Departments = _departmintRepository.GetAll();
+
             if (id == null)
             {
                 return BadRequest();
@@ -92,7 +108,7 @@ namespace Route.C41.G01.PL.Controllers
             {
                 return NotFound();
             }
-
+            
             return View(employee);
 
         }
@@ -163,5 +179,6 @@ namespace Route.C41.G01.PL.Controllers
             return View(employee);
         }
 
+       
     }
 }
