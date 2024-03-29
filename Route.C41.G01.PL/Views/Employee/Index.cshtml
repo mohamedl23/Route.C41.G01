@@ -1,5 +1,5 @@
 ﻿
-@model IEnumerable<Employee>;
+@model IEnumerable<EmployeeViewModel>;
 
 @{
     ViewData["Title"] = "Index";
@@ -15,6 +15,16 @@
 {  
 <div class="alert alert-success">@TempData["Message"] </div>
 }
+<div class="row justify-content-center align-items-center mt-4 offset-2">
+    <form asp-action="Index" class="row col-8 "  >
+        <div class="col-8" >
+            <input type="text" class="form-control" name="SearchInput" placeholder="Search By Name ..." />
+        </div>
+        <div class="col-4" >
+            <input type="submit" value="Search" class="btn btn-success" />
+        </div>
+    </form>
+</div>
 
 
 <h1 class="text-center pd-4" >All Employee</h1>

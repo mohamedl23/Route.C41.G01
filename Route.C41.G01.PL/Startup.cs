@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Route.C41.G01.DAL.Data;
 using Route.C41.G01.BLL.Interfaces;
 using Route.C41.G01.BLL.Repcsitories;
+using Route.C41.G01.PL.Mapper_Helper;
 
 namespace Route.C41.G01.PL
 {
@@ -36,6 +37,7 @@ namespace Route.C41.G01.PL
 
             services.AddScoped<IDepartmintRepository, DepartmintRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddAutoMapper(M => M.AddProfile(new MappingProfiles() ));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
