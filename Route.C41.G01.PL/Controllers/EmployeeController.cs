@@ -35,21 +35,20 @@ namespace Route.C41.G01.PL.Controllers
 
         public IActionResult Index(string SearchInput)
         {
-            //Binding is One Way Binding in MVC
-            // View Data Is A Dictionary Object
-
-            //ViewData["Message"] = "Hello View Data";
-            //ViewBag.Message = "Hello View Bag";
-            //IEnumerable<Employee> employees;
-            var employees = Enumerable.Empty<Employee>();
-
-            var EmpMapped = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeViewModel>>(employees);
+            IEnumerable<Employee> employees;
+            ///Binding is One Way Binding in MVC
+            /// View Data Is A Dictionary Object
+            ///ViewData["Message"] = "Hello View Data";
+            ///ViewBag.Message = "Hello View Bag";
+            ///IEnumerable<Employee> employees;
+            //var employees = Enumerable.Empty<Employee>();
+            
 
             if (string.IsNullOrEmpty(SearchInput))
             {
                 employees = _employeeRepository.GetAll();
             }
-            else
+            else 
             {
                 employees = _employeeRepository.SearchByName(SearchInput.ToLower());
             }
@@ -58,7 +57,8 @@ namespace Route.C41.G01.PL.Controllers
             
             ViewBag.Departments = _departmintRepository.GetAll();
 
-            return View(EmpMapped);
+            var EmpMapped = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeViewModel>>(employees) ;
+            return View( EmpMapped);
         }
         [HttpGet]
         public IActionResult Create()
