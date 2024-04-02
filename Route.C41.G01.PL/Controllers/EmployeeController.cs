@@ -6,9 +6,11 @@ using Route.C41.G01.BLL.Interfaces;
 using Route.C41.G01.BLL.Repcsitories;
 using Route.C41.G01.DAL.Models;
 using Route.C41.G01.DAL.Models.ViewModels;
+using Route.C41.G01.PL.Mapper_Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 
 namespace Route.C41.G01.PL.Controllers
 {
@@ -71,6 +73,7 @@ namespace Route.C41.G01.PL.Controllers
         {
             if (ModelState.IsValid)
             {
+                employeeVM.ImageName = DocumentSettings.UploadFiles(employeeVM.Image, "Images");
                 var MappedEmp = _mapper.Map<EmployeeViewModel , Employee>(employeeVM);
                 var count = _employeeRepository.Add(MappedEmp);
                 if (count > 0)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -33,7 +34,8 @@ namespace Route.C41.G01.DAL.Models.ViewModels
         public EmpType employeeType { get; set; }
         public DateTime CreationDate { get; set; } = DateTime.Now;
         public bool IsDeleted { get; set; } = false;
-
+        public IFormFile Image { get; set; }
+        public string ImageName { get; set; }
         public int? DepartmentId { get; set; }
         public Department Department { get; set; }
 
