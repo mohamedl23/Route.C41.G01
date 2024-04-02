@@ -27,7 +27,7 @@ namespace Route.C41.G01.PL.Mapper_Helper
             return fileName;
         }
 
-        public static void DeleteFile(string fileName , string folderName )
+        public static void DeleteFile(string fileName , string folderName ) 
         {
             string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Files", folderName, fileName);
             if (File.Exists(filePath) )

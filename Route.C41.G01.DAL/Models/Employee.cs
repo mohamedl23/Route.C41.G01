@@ -41,6 +41,7 @@ namespace Route.C41.G01.DAL.Models
         public EmpType employeeType { get; set; }
         public DateTime CreationDate { get; set; } = DateTime.Now;
         public bool IsDeleted { get; set; } = false;
+        public string ImageName { get; set; }
 
         public int? DepartmentId { get; set; }
         public Department Department { get; set; }
