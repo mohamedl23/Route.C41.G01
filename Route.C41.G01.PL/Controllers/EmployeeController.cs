@@ -176,6 +176,7 @@ namespace Route.C41.G01.PL.Controllers
             {
                 var MappedEmp = _mapper.Map<EmployeeViewModel, Employee>(employeeVM);
                 _employeeRepository.Delete(MappedEmp);
+                DocumentSettings.DeleteFile(employeeVM.ImageName, "Images");
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
