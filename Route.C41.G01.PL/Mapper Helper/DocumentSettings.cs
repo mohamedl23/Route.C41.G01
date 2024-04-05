@@ -2,13 +2,14 @@
 using Microsoft.CodeAnalysis;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 //using static System.Net.WebRequestMethods;
 
 namespace Route.C41.G01.PL.Mapper_Helper
 {
     public static class DocumentSettings
     {
-        public static string UploadFiles(IFormFile file,string folderName )
+        public static async Task<string> UploadFilesAsync(IFormFile file,string folderName )
         {
             //1.Get Located Folder Path
             string FolderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Files", folderName);

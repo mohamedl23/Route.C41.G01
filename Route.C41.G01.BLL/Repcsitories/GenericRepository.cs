@@ -20,8 +20,8 @@ namespace Route.C41.G01.BLL.Repcsitories
 
         }
 
-        public void Add(T entity)
-           => _dbcontext.Set<T>().Add(entity);
+        public async Task Add(T entity)
+           => await _dbcontext.Set<T>().AddAsync(entity);
 
         public void Update(T entity)
          =>  _dbcontext.Set<T>().Update(entity);
@@ -31,14 +31,14 @@ namespace Route.C41.G01.BLL.Repcsitories
         public void Delete(T entity)
           =>  _dbcontext.Set<T>().Remove(entity);
 
-        public T Get(int id)
-           => _dbcontext.Set<T>().Find(id);
+        public async Task<T> Get(int id)
+           => await _dbcontext.Set<T>().FindAsync(id);
 
-        public IEnumerable<T> GetAll()
+        public async Task<IEnumerable<T>> GetAll()
         {
             if (typeof(T) == typeof(Employee))
             {
-                return (IEnumerable <T> ) _dbcontext.Employees.Include(E => E.Department).ToList();
+                return (IEnumerable <T> )await _dbcontext.Employees.Include(E => E.Department).ToListAsync();
             }
             else
             {

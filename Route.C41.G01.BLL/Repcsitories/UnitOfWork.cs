@@ -21,7 +21,7 @@ namespace Route.C41.G01.BLL.Repcsitories
             _dbContext = dbContext;
         }
 
-        public int Complite()
+        public async Task< int> Complite()
             =>_dbContext.SaveChanges();
         public void Dispose() 
             => _dbContext.Dispose();

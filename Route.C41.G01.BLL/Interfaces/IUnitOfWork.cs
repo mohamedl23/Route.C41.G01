@@ -10,6 +10,6 @@ namespace Route.C41.G01.BLL.Interfaces
     {
         public IEmployeeRepository EmployeeRepository { get; set; }
         public IDepartmintRepository DepartmintRepository { get; set;}
-        int Complite();
+        Task<int> Complite();
     }
 }
