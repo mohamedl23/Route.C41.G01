@@ -20,27 +20,19 @@ namespace Route.C41.G01.BLL.Repcsitories
 
         }
 
-        public int Add(T entity)
-        {
-            _dbcontext.Set<T>().Add(entity);
-            return _dbcontext.SaveChanges();
-        }
-        public int Update(T entity)
-        {
-            _dbcontext.Update(entity);
-            return _dbcontext.SaveChanges();
-        }
+        public void Add(T entity)
+           => _dbcontext.Set<T>().Add(entity);
 
-        public int Delete(T entity)
-        {
-            _dbcontext.Remove(entity);
-            return _dbcontext.SaveChanges();
-        }
+        public void Update(T entity)
+         =>  _dbcontext.Set<T>().Update(entity);
+
+
+
+        public void Delete(T entity)
+          =>  _dbcontext.Set<T>().Remove(entity);
 
         public T Get(int id)
-        {
-            return _dbcontext.Set<T>().Find(id);
-        }
+           => _dbcontext.Set<T>().Find(id);
 
         public IEnumerable<T> GetAll()
         {

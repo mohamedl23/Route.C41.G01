@@ -29,10 +29,13 @@ namespace Route.C41.G01.PL.Mapper_Helper
          
         public static void DeleteFile(string fileName , string folderName ) 
         {
-            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Files", folderName, fileName);
-            if (File.Exists(filePath) )
+            if (fileName is not null && folderName is not null)
             {
-                File.Delete(filePath);
+                string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Files", folderName, fileName);
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                }
             }
 
         }

@@ -9,18 +9,20 @@ namespace Route.C41.G01.PL.Controllers
 {
     public class DepartmentController : Controller
     {
-        private readonly IDepartmintRepository _departmintRepository;
+        //private readonly IDepartmintRepository _departmintRepository;
         private readonly IWebHostEnvironment _env;
-
-        public DepartmentController(IDepartmintRepository departmintRepository , IWebHostEnvironment env)
+        private readonly IUnitOfWork _unitOfWork;
+        
+        
+        public DepartmentController(IUnitOfWork unitOfWork , IWebHostEnvironment env)
         {
-            _departmintRepository = departmintRepository;
+            _unitOfWork = unitOfWork;
            _env = env;
         }
 
         public IActionResult Index()
         {
-            var departments = _departmintRepository.GetAll();
+            var departments = _unitOfWork.DepartmintRepository.GetAll();
 
             return View(departments);
         }
@@ -32,13 +34,14 @@ namespace Route.C41.G01.PL.Controllers
         [HttpPost]
         public IActionResult Create(Department department)
         {
+            
             if (ModelState.IsValid)
             {
-                var count = _departmintRepository.Add(department);
-                if (count > 0)
-                {
+                 _unitOfWork.DepartmintRepository.Add(department);
+                //if (count > 0)
+                //{
                     return RedirectToAction(nameof(Index));
-                }
+                //}
             }
                 return View(department);
 
@@ -50,7 +53,7 @@ namespace Route.C41.G01.PL.Controllers
             {
                 return BadRequest();
             }
-            var department = _departmintRepository.Get(id.Value);
+            var department = _unitOfWork.DepartmintRepository.Get(id.Value);
             if (department == null)
             {
                 return NotFound();
@@ -64,7 +67,7 @@ namespace Route.C41.G01.PL.Controllers
             {
                 return BadRequest();
             }
-            var department = _departmintRepository.Get(id.Value);
+            var department = _unitOfWork.DepartmintRepository.Get(id.Value);
 
             if (department == null)
             {
@@ -90,7 +93,7 @@ namespace Route.C41.G01.PL.Controllers
             {
                 try
                 {
-                    _departmintRepository.Update(department);
+                    _unitOfWork.DepartmintRepository.Update(department);
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex) 
@@ -109,7 +112,7 @@ namespace Route.C41.G01.PL.Controllers
             {
                 return BadRequest();
             }
-            var department = _departmintRepository.Get(id.Value);
+            var department = _unitOfWork.DepartmintRepository.Get(id.Value);
 
             if (department == null)
             {
@@ -124,7 +127,7 @@ namespace Route.C41.G01.PL.Controllers
         {
             try
             {
-                _departmintRepository.Delete(department);
+                _unitOfWork.DepartmintRepository.Delete(department);
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)

@@ -35,8 +35,7 @@ namespace Route.C41.G01.PL
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
 
-            services.AddScoped<IDepartmintRepository, DepartmintRepository>();
-            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddScoped<IUnitOfWork , UnitOfWork>();
             services.AddAutoMapper(M => M.AddProfile(new MappingProfiles() ));
         }
 

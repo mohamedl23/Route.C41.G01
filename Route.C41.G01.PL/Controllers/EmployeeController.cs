@@ -17,9 +17,10 @@ namespace Route.C41.G01.PL.Controllers
     public class EmployeeController : Controller
     {
         private readonly IMapper _mapper;
-        private readonly IEmployeeRepository _employeeRepository;
-        private readonly IDepartmintRepository _departmintRepository;
+        //private readonly IEmployeeRepository _employeeRepository;
+        //private readonly IDepartmintRepository _departmintRepository;
         private readonly IWebHostEnvironment _env;
+        private readonly IUnitOfWork _unitOfWork;
 
         //public EmployeeController(IEmployeeRepository EmployeeRepository, IWebHostEnvironment env)
         //{
@@ -27,11 +28,12 @@ namespace Route.C41.G01.PL.Controllers
             
         //}
 
-        public EmployeeController(IMapper mapper,IEmployeeRepository employeeRepository, IDepartmintRepository departmintRepository, IWebHostEnvironment env)
+        public EmployeeController(IMapper mapper,IUnitOfWork unitOfWork , IWebHostEnvironment env)
         {
             _mapper = mapper;
-            _employeeRepository = employeeRepository;
-            _departmintRepository = departmintRepository;
+            _unitOfWork = unitOfWork;
+            //_employeeRepository = employeeRepository;
+            //_departmintRepository = departmintRepository;
             _env = env;
         }
 
@@ -48,16 +50,16 @@ namespace Route.C41.G01.PL.Controllers
 
             if (string.IsNullOrEmpty(SearchInput))
             {
-                employees = _employeeRepository.GetAll();
+                employees = _unitOfWork.EmployeeRepository.GetAll();
             }
             else 
             {
-                employees = _employeeRepository.SearchByName(SearchInput.ToLower());
+                employees = _unitOfWork.EmployeeRepository.SearchByName(SearchInput.ToLower());
             }
 
-            var departments = _employeeRepository.GetAll();
+            var departments = _unitOfWork.EmployeeRepository.GetAll();
             
-            ViewBag.Departments = _departmintRepository.GetAll();
+            ViewBag.Departments = _unitOfWork.DepartmintRepository.GetAll();
 
             var EmpMapped = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeViewModel>>(employees) ;
             return View( EmpMapped);
@@ -65,7 +67,7 @@ namespace Route.C41.G01.PL.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            ViewBag.Departments = _departmintRepository.GetAll();
+            ViewBag.Departments = _unitOfWork.DepartmintRepository.GetAll();
             return View();
         }
         [HttpPost]
@@ -75,15 +77,17 @@ namespace Route.C41.G01.PL.Controllers
             {
                 employeeVM.ImageName = DocumentSettings.UploadFiles(employeeVM.Image, "Images");
                 var MappedEmp = _mapper.Map<EmployeeViewModel , Employee>(employeeVM);
-                var count = _employeeRepository.Add(MappedEmp);
-                if (count > 0)
-                {
-                    TempData["Message"] = "Employee is Created Successfully";
-                }
-                else
-                {
-                    TempData["Message"] = "An Error Has Occured , Department Not Created";
-                }
+               /*var count =*/ _unitOfWork.EmployeeRepository.Add(MappedEmp);
+                _unitOfWork.Complite();
+                //var count = _employeeRepository.Add(MappedEmp);
+                //if (count > 0)
+                //{
+                //    TempData["Message"] = "Employee is Created Successfully";
+                //}
+                //else
+                //{
+                //    TempData["Message"] = "An Error Has Occured , Department Not Created";
+                //}
                     return RedirectToAction(nameof(Index));
             }
             return View(employeeVM);
@@ -96,7 +100,7 @@ namespace Route.C41.G01.PL.Controllers
             {
                 return BadRequest();
             }
-            var employees = _employeeRepository.Get(id.Value);
+            var employees = _unitOfWork.EmployeeRepository.Get(id.Value);
             if (employees == null)
             {
                 return NotFound();
@@ -107,13 +111,13 @@ namespace Route.C41.G01.PL.Controllers
 
         public IActionResult Edit(int? id)
         {
-            ViewBag.Departments = _departmintRepository.GetAll();
+            ViewBag.Departments = _unitOfWork.DepartmintRepository.GetAll();
 
             if (id == null)
             {
                 return BadRequest();
             }
-            var employee = _employeeRepository.Get(id.Value);
+            var employee = _unitOfWork.EmployeeRepository.Get(id.Value);
 
             if (employee == null)
             {
@@ -140,7 +144,8 @@ namespace Route.C41.G01.PL.Controllers
                 try
                 {
                     var MappedEmp = _mapper.Map<EmployeeViewModel, Employee>(employeeVM);
-                    _employeeRepository.Update(MappedEmp);
+                    _unitOfWork.EmployeeRepository.Update(MappedEmp);
+                    _unitOfWork.Complite();
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
@@ -159,7 +164,7 @@ namespace Route.C41.G01.PL.Controllers
             {
                 return BadRequest();
             }
-            var employee = _employeeRepository.Get(id.Value);
+            var employee = _unitOfWork.EmployeeRepository.Get(id.Value);
 
             if (employee == null)
             {
@@ -170,13 +175,22 @@ namespace Route.C41.G01.PL.Controllers
 
         }
         [HttpPost]
-        public IActionResult Delete(EmployeeViewModel employeeVM)
+        public IActionResult Delete( [FromRoute] int id , EmployeeViewModel employeeVM)
         {
+            if ( id != employeeVM.Id)
+            {
+                return BadRequest();
+            }
             try
             {
                 var MappedEmp = _mapper.Map<EmployeeViewModel, Employee>(employeeVM);
-                _employeeRepository.Delete(MappedEmp);
-                DocumentSettings.DeleteFile(employeeVM.ImageName, "Images");
+                _unitOfWork.EmployeeRepository.Delete(MappedEmp);
+                int Count = _unitOfWork.Complite();
+                if ( Count > 0)
+                {
+                    
+                DocumentSettings.DeleteFile(MappedEmp.ImageName, "Images");
+                }
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
