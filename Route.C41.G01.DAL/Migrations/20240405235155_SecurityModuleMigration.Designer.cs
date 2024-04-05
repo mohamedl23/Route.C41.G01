@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Route.C41.G01.DAL.Data;
 
 namespace Route.C41.G01.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDpContext))]
-    partial class ApplicationDpContextModelSnapshot : ModelSnapshot
+    [Migration("20240405235155_SecurityModuleMigration")]
+    partial class SecurityModuleMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
