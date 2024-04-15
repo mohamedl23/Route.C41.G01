@@ -4,23 +4,26 @@ using Microsoft.Extensions.Hosting;
 using Route.C41.G01.BLL.Interfaces;
 using Route.C41.G01.DAL.Models;
 using System;
+using System.Threading.Tasks;
 
 namespace Route.C41.G01.PL.Controllers
 {
     public class DepartmentController : Controller
     {
-        private readonly IDepartmintRepository _departmintRepository;
+        //private readonly IDepartmintRepository _departmintRepository;
         private readonly IWebHostEnvironment _env;
-
-        public DepartmentController(IDepartmintRepository departmintRepository , IWebHostEnvironment env)
+        private readonly IUnitOfWork _unitOfWork;
+        
+        
+        public DepartmentController(IUnitOfWork unitOfWork , IWebHostEnvironment env)
         {
-            _departmintRepository = departmintRepository;
+            _unitOfWork = unitOfWork;
            _env = env;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var departments = _departmintRepository.GetAll();
+            var departments = await _unitOfWork.DepartmintRepository.GetAll();
 
             return View(departments);
         }
@@ -30,27 +33,28 @@ namespace Route.C41.G01.PL.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(Department department)
+        public async Task<IActionResult> Create(Department department)
         {
+            
             if (ModelState.IsValid)
             {
-                var count = _departmintRepository.Add(department);
-                if (count > 0)
-                {
+                 await _unitOfWork.DepartmintRepository.Add(department);
+                //if (count > 0)
+                //{
                     return RedirectToAction(nameof(Index));
-                }
+                //}
             }
                 return View(department);
 
         }
 
-        public IActionResult Details(int? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return BadRequest();
             }
-            var department = _departmintRepository.Get(id.Value);
+            var department = await _unitOfWork.DepartmintRepository.Get(id.Value);
             if (department == null)
             {
                 return NotFound();
@@ -58,13 +62,13 @@ namespace Route.C41.G01.PL.Controllers
             return View (department);
         }
 
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return BadRequest();
             }
-            var department = _departmintRepository.Get(id.Value);
+            var department =await _unitOfWork.DepartmintRepository.Get(id.Value);
 
             if (department == null)
             {
@@ -76,7 +80,7 @@ namespace Route.C41.G01.PL.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit([FromRoute]int id , Department department)
+        public async Task<IActionResult> Edit([FromRoute]int id , Department department)
         {
             if ( id != department.Id)
             {
@@ -90,7 +94,8 @@ namespace Route.C41.G01.PL.Controllers
             {
                 try
                 {
-                    _departmintRepository.Update(department);
+                     _unitOfWork.DepartmintRepository.Update(department);
+                    await _unitOfWork.Complite();
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex) 
@@ -103,13 +108,13 @@ namespace Route.C41.G01.PL.Controllers
             return View(department);
         }
         
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
                 return BadRequest();
             }
-            var department = _departmintRepository.Get(id.Value);
+            var department = await _unitOfWork.DepartmintRepository.Get(id.Value);
 
             if (department == null)
             {
@@ -120,11 +125,12 @@ namespace Route.C41.G01.PL.Controllers
 
         }
         [HttpPost]
-        public IActionResult Delete(Department department)
+        public async Task<IActionResult> Delete(Department department)
         {
             try
             {
-                _departmintRepository.Delete(department);
+                _unitOfWork.DepartmintRepository.Delete(department);
+                await _unitOfWork.Complite();
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)

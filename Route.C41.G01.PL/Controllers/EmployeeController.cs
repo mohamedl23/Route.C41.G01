@@ -11,15 +11,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
+using System.Threading.Tasks;
 
 namespace Route.C41.G01.PL.Controllers
 {
     public class EmployeeController : Controller
     {
         private readonly IMapper _mapper;
-        private readonly IEmployeeRepository _employeeRepository;
-        private readonly IDepartmintRepository _departmintRepository;
+        //private readonly IEmployeeRepository _employeeRepository;
+        //private readonly IDepartmintRepository _departmintRepository;
         private readonly IWebHostEnvironment _env;
+        private readonly IUnitOfWork _unitOfWork;
 
         //public EmployeeController(IEmployeeRepository EmployeeRepository, IWebHostEnvironment env)
         //{
@@ -27,15 +29,16 @@ namespace Route.C41.G01.PL.Controllers
             
         //}
 
-        public EmployeeController(IMapper mapper,IEmployeeRepository employeeRepository, IDepartmintRepository departmintRepository, IWebHostEnvironment env)
+        public EmployeeController(IMapper mapper,IUnitOfWork unitOfWork , IWebHostEnvironment env)
         {
             _mapper = mapper;
-            _employeeRepository = employeeRepository;
-            _departmintRepository = departmintRepository;
+            _unitOfWork = unitOfWork;
+            //_employeeRepository = employeeRepository;
+            //_departmintRepository = departmintRepository;
             _env = env;
         }
 
-        public IActionResult Index(string SearchInput)
+        public async Task<IActionResult> Index(string SearchInput)
         {
             IEnumerable<Employee> employees;
             ///Binding is One Way Binding in MVC
@@ -48,34 +51,36 @@ namespace Route.C41.G01.PL.Controllers
 
             if (string.IsNullOrEmpty(SearchInput))
             {
-                employees = _employeeRepository.GetAll();
+                employees = await _unitOfWork.EmployeeRepository.GetAll();
             }
             else 
             {
-                employees = _employeeRepository.SearchByName(SearchInput.ToLower());
+                employees = _unitOfWork.EmployeeRepository.SearchByName(SearchInput.ToLower());
             }
 
-            var departments = _employeeRepository.GetAll();
+            var departments = _unitOfWork.EmployeeRepository.GetAll();
             
-            ViewBag.Departments = _departmintRepository.GetAll();
+            ViewBag.Departments = _unitOfWork.DepartmintRepository.GetAll();
 
             var EmpMapped = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeViewModel>>(employees) ;
             return View( EmpMapped);
         }
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewBag.Departments = _departmintRepository.GetAll();
+            ViewBag.Departments = await _unitOfWork.DepartmintRepository.GetAll();
             return View();
         }
         [HttpPost]
-        public IActionResult Create(EmployeeViewModel employeeVM)
+        public async Task<IActionResult> Create(EmployeeViewModel employeeVM)
         {
             if (ModelState.IsValid)
             {
-                employeeVM.ImageName = DocumentSettings.UploadFiles(employeeVM.Image, "Images");
-                var MappedEmp = _mapper.Map<EmployeeViewModel , Employee>(employeeVM);
-                var count = _employeeRepository.Add(MappedEmp);
+                employeeVM.ImageName = await DocumentSettings.UploadFilesAsync(employeeVM.Image, "Images");
+                var MappedEmp =  _mapper.Map<EmployeeViewModel , Employee>(employeeVM);
+               await _unitOfWork.EmployeeRepository.Add(MappedEmp);
+                var count = await _unitOfWork.Complite();
+                //var count = _employeeRepository.Add(MappedEmp);
                 if (count > 0)
                 {
                     TempData["Message"] = "Employee is Created Successfully";
@@ -84,19 +89,19 @@ namespace Route.C41.G01.PL.Controllers
                 {
                     TempData["Message"] = "An Error Has Occured , Department Not Created";
                 }
-                    return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index));
             }
             return View(employeeVM);
 
         }
 
-        public IActionResult Details(int? id ,string ViewName = "Details" )
+        public async Task<IActionResult> Details(int? id ,string ViewName = "Details" )
         {
             if (id == null)
             {
                 return BadRequest();
             }
-            var employees = _employeeRepository.Get(id.Value);
+            var employees =await _unitOfWork.EmployeeRepository.Get(id.Value);
             if (employees == null)
             {
                 return NotFound();
@@ -105,15 +110,15 @@ namespace Route.C41.G01.PL.Controllers
             return View(ViewName , MappedEmp);
         }
 
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
-            ViewBag.Departments = _departmintRepository.GetAll();
+            ViewBag.Departments = await _unitOfWork.DepartmintRepository.GetAll();
 
             if (id == null)
             {
                 return BadRequest();
             }
-            var employee = _employeeRepository.Get(id.Value);
+            var employee = await _unitOfWork.EmployeeRepository.Get(id.Value);
 
             if (employee == null)
             {
@@ -125,7 +130,7 @@ namespace Route.C41.G01.PL.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit([FromRoute] int id, EmployeeViewModel employeeVM)
+        public async Task<IActionResult> Edit([FromRoute] int id, EmployeeViewModel employeeVM)
         {
             if (id != employeeVM.Id)
             {
@@ -140,7 +145,8 @@ namespace Route.C41.G01.PL.Controllers
                 try
                 {
                     var MappedEmp = _mapper.Map<EmployeeViewModel, Employee>(employeeVM);
-                    _employeeRepository.Update(MappedEmp);
+                    _unitOfWork.EmployeeRepository.Update(MappedEmp);
+                   await _unitOfWork.Complite();
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
@@ -153,13 +159,13 @@ namespace Route.C41.G01.PL.Controllers
             return View(employeeVM);
         }
 
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
                 return BadRequest();
             }
-            var employee = _employeeRepository.Get(id.Value);
+            var employee = await _unitOfWork.EmployeeRepository.Get(id.Value);
 
             if (employee == null)
             {
@@ -170,13 +176,22 @@ namespace Route.C41.G01.PL.Controllers
 
         }
         [HttpPost]
-        public IActionResult Delete(EmployeeViewModel employeeVM)
+        public async Task<IActionResult> Delete( [FromRoute] int id , EmployeeViewModel employeeVM)
         {
+            if ( id != employeeVM.Id)
+            {
+                return BadRequest();
+            }
             try
             {
                 var MappedEmp = _mapper.Map<EmployeeViewModel, Employee>(employeeVM);
-                _employeeRepository.Delete(MappedEmp);
-                DocumentSettings.DeleteFile(employeeVM.ImageName, "Images");
+                _unitOfWork.EmployeeRepository.Delete(MappedEmp);
+                int Count = await _unitOfWork.Complite();
+                if ( Count > 0)
+                {
+                    
+                DocumentSettings.DeleteFile(MappedEmp.ImageName, "Images");
+                }
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)

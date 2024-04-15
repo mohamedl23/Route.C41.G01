@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Route.C41.G01.DAL.Models;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Route.C41.G01.DAL.Data
 {
-    public class ApplicationDpContext : DbContext
+    public class ApplicationDpContext : IdentityDbContext
     {
         public ApplicationDpContext(DbContextOptions<ApplicationDpContext> options):base (options)
         {
@@ -22,6 +23,8 @@ namespace Route.C41.G01.DAL.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
         }
