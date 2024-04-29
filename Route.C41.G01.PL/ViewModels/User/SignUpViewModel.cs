@@ -4,6 +4,14 @@ namespace Route.C41.G01.PL.ViewModels.User
 {
 	public class SignUpViewModel
 	{
+		[Required(ErrorMessage ="First Name Is Required")]
+		[Display(Name = "First Name")]
+		public string FirstName { get; set; }
+
+		[Required(ErrorMessage = "Last Name Is Required")]
+		[Display(Name = "Last Name")]
+		public string LastName { get; set; }
+
 		[Required(ErrorMessage = "User Name Is Required")]
 		public string Username { get; set; }
 		[Required(ErrorMessage ="Email Is Required")]

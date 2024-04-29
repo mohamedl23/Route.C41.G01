@@ -531,7 +531,7 @@ input.checkbox {
 
 /*-- responsive-design --*/
 @media(max-width:1440px) {
-    input[type="text"], input[type="email"], input[type="password"] {
+    input[type="text"],.Marg input[type="email"], input[type="password"] {
         width: 94%;
     }
 }

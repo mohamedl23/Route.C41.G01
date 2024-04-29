@@ -8,8 +8,11 @@
 <h1>Sign Up</h1>
 <div class="main-agileinfo">
 	<div class="agileits-top">
+		<div asp-validation-summary="ModelOnly"></div>
 		<form asp-action="SignUp" method="post">
-			<input class="text" asp-for="Username" placeholder="Username" required="">
+			<input class="text .Marg" asp-for="FirstName" placeholder="First Name" required="">
+			<input class="text" asp-for="LastName" placeholder="Last Name" required="">
+			<input class="text" asp-for="Username" placeholder="User Name" required="">
 			<input class="text email" asp-for="Email" placeholder="Email" required="">
 			<input class="text" asp-for="Password" placeholder="Password" required="">
 			<input class="text w3lpass" asp-for="ConfirmPassword" placeholder="Confirm Password" required="">

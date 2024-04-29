@@ -13,6 +13,9 @@ using Route.C41.G01.DAL.Data;
 using Route.C41.G01.BLL.Interfaces;
 using Route.C41.G01.BLL.Repcsitories;
 using Route.C41.G01.PL.Mapper_Helper;
+using Route.C41.G01.DAL.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 
 namespace Route.C41.G01.PL
 {
@@ -37,7 +40,26 @@ namespace Route.C41.G01.PL
 
             services.AddScoped<IUnitOfWork , UnitOfWork>();
             services.AddAutoMapper(M => M.AddProfile(new MappingProfiles() ));
-        }
+
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequiredUniqueChars = 2;
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequiredLength = 5;
+
+                options.Lockout.AllowedForNewUsers = true;
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+
+
+
+            }
+            ).AddEntityFrameworkStores<ApplicationDpContext>();
+
+		}
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
